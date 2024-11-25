@@ -118,35 +118,53 @@ void GPIO::disable_pullup() {
 	*port_register &= ~(1 << pin_mask);
 }
 
-void GPIO::enable_INT0(const uint8_t mode) {
+void GPIO::enable_INT0(const gpio_int_mode mode) {
 	
 	switch(mode) {
-		case 0 ... 255:
-			// falling edge
-			EICRA |= (1 << ISC01);
+		case GPIO_INT_MODE_LOW_LEVEL:
+			EICRA &= ~((1 << ISC00) | (1 << ISC01));
+			break;
+		case GPIO_INT_MODE_CHANGE_LEVEL:
+			EICRA |= (1 << ISC00);
+			EICRA &= ~(1 << ISC01);
+			break;
+		case GPIO_INT_MODE_FALLING_EDGE:
 			EICRA &= ~(1 << ISC00);
-			// enable INT0
-			EIMSK |= (1 << INT0);
+			EICRA |= (1 << ISC01);
+			break;
+		case GPIO_INT_MODE_RISING_EDGE:
+			EICRA |= (1 << ISC00) | (1 << ISC01);
 			break;
 		default:
 			break;
 	}
+	// enable INT0
+	EIMSK |= (1 << INT0);
 	sei();
 }
 
-void GPIO::enable_INT1(const uint8_t mode) {
+void GPIO::enable_INT1(const gpio_int_mode mode) {
 	
 	switch(mode) {
-		case 0 ... 255:
-			// falling edge
-			EICRA |= (1 << ISC11);
+		case GPIO_INT_MODE_LOW_LEVEL:
+			EICRA &= ~((1 << ISC10) | (1 << ISC11));
+			break;
+		case GPIO_INT_MODE_CHANGE_LEVEL:
+			EICRA |= (1 << ISC10);
+			EICRA &= ~(1 << ISC11);
+			break;
+		case GPIO_INT_MODE_FALLING_EDGE:
 			EICRA &= ~(1 << ISC10);
-			// enable INT1
-			EIMSK |= (1 << INT1);
+			EICRA |= (1 << ISC11);
+			break;
+		case GPIO_INT_MODE_RISING_EDGE:
+			EICRA |= (1 << ISC10) | (1 << ISC11);
 			break;
 		default:
 			break;
 	}
+	// enable INT1
+	EIMSK |= (1 << INT1);
 	sei();
 }
 

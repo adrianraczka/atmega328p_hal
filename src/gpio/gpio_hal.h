@@ -35,6 +35,13 @@ typedef enum {
 	GPIO_INPUT_HIGH,
 } gpio_input_state_t;
 
+typedef enum {
+	GPIO_INT_MODE_LOW_LEVEL,
+	GPIO_INT_MODE_CHANGE_LEVEL,
+	GPIO_INT_MODE_FALLING_EDGE,
+	GPIO_INT_MODE_RISING_EDGE,
+} gpio_int_mode;
+
 class GPIO {
 private:
 	// var 
@@ -68,8 +75,8 @@ public:
 
 	gpio_input_state_t read();
 	
-	static void enable_INT0(const uint8_t mode);
-	static void enable_INT1(const uint8_t mode);
+	static void enable_INT0(const gpio_int_mode mode);
+	static void enable_INT1(const gpio_int_mode mode);
 };
 
 #endif /* GPIO_HAL_H_ */
