@@ -8,17 +8,17 @@ void PowerManager::enable_sleep() {
 }
 
 void PowerManager::set_idle_mode() {
-	SMCR &= ~(1 << SM0) & ~(1 << SM1) & ~(1 << SM2);
+	SMCR &= ~((1 << SM0) | (1 << SM1) | (1 << SM2));
 }
 
 void PowerManager::set_adc_noise_reduction_mode() {
 	SMCR |= (1 << SM0);
-	SMCR &= ~(1 << SM1) & ~(1 << SM2);
+	SMCR &= ~((1 << SM1) | (1 << SM2));
 }
 
 void PowerManager::set_power_down_mode() {
 	SMCR |= (1 << SM1);
-	SMCR &= ~(1 << SM0) & ~(1 << SM2);
+	SMCR &= ~((1 << SM0) | (1 << SM2));
 }
 
 void PowerManager::set_power_save_mode() {
